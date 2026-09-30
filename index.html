@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f3f6f4">
+  <meta name="description" content="CampusFix helps students report and track campus issues.">
+  <title>CampusFix | Campus issue tracking</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <div class="sidebar-scrim" id="sidebarScrim"></div>
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <a class="brand" href="#dashboard" data-view="dashboard" aria-label="CampusFix dashboard">
+        <span class="brand-mark" aria-hidden="true">C</span>
+        <span class="brand-copy"><strong>CampusFix</strong><small>Campus operations</small></span>
+      </a>
+
+      <div class="nav-caption">WORKSPACE</div>
+      <nav class="primary-nav">
+        <button class="nav-link is-active" type="button" data-view="dashboard"><span class="nav-icon" aria-hidden="true">▦</span>Dashboard</button>
+        <button class="nav-link" type="button" data-view="report"><span class="nav-icon nav-plus" aria-hidden="true">+</span>Report issue</button>
+        <button class="nav-link" type="button" data-view="issues"><span class="nav-icon" aria-hidden="true">☷</span>All issues<span class="nav-count" id="issueNavCount">0</span></button>
+        <button class="nav-link" type="button" data-view="resolved"><span class="nav-icon" aria-hidden="true">✓</span>Resolved issues</button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="help-panel">
+          <span class="help-icon" aria-hidden="true">i</span>
+          <strong>Make campus better</strong>
+          <p>Every report helps the right team take action.</p>
+          <button class="help-link" type="button" data-view="report">Report an issue <span aria-hidden="true">↗</span></button>
+        </div>
+        <button class="nav-link about-link" type="button" data-view="about"><span class="nav-icon" aria-hidden="true">ⓘ</span>About CampusFix</button>
+        <div class="profile-chip"><span class="profile-avatar" aria-hidden="true">CF</span><span><strong>Campus community</strong><small>Student workspace</small></span></div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-button menu-button" id="menuToggle" type="button" aria-label="Open navigation" aria-expanded="false"><span aria-hidden="true">☰</span></button>
+          <div class="breadcrumb"><span>Workspace</span><span class="breadcrumb-slash">/</span><strong id="breadcrumbCurrent">Dashboard</strong></div>
+        </div>
+        <div class="topbar-actions">
+          <span class="system-status"><span class="status-dot"></span>All systems operational</span>
+          <button class="theme-button" id="themeToggle" type="button" aria-label="Switch to dark mode"><span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">Dark mode</span></button>
+          <button class="top-report-button" type="button" data-view="report"><span aria-hidden="true">+</span> Report issue</button>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <section class="view-section is-visible" id="dashboardView" aria-labelledby="dashboardHeading">
+          <div class="page-heading dashboard-heading">
+            <div><p class="eyebrow" id="todayLabel">CAMPUS OPERATIONS</p><h1 id="dashboardHeading">Good day, campus.</h1><p class="page-subtitle">A clear view of what needs attention across your college.</p></div>
+            <button class="primary-button" type="button" data-view="report"><span aria-hidden="true">+</span> Report an issue</button>
+          </div>
+
+          <div class="stat-grid" aria-label="Issue statistics">
+            <article class="stat-card stat-total"><div class="stat-top"><span class="stat-label">Total issues</span><span class="stat-icon" aria-hidden="true">▦</span></div><strong class="stat-value" id="totalIssues">0</strong><span class="stat-foot">Across your campus</span></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-label">Pending</span><span class="stat-icon icon-pending" aria-hidden="true">◷</span></div><strong class="stat-value" id="pendingIssues">0</strong><span class="stat-foot">Awaiting attention</span></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-label">In progress</span><span class="stat-icon icon-progress" aria-hidden="true">↻</span></div><strong class="stat-value" id="progressIssues">0</strong><span class="stat-foot">Currently being handled</span></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-label">Resolved</span><span class="stat-icon icon-resolved" aria-hidden="true">✓</span></div><strong class="stat-value" id="resolvedIssues">0</strong><span class="stat-foot">Back in working order</span></article>
+            <article class="stat-card stat-high"><div class="stat-top"><span class="stat-label">High priority</span><span class="stat-icon icon-high" aria-hidden="true">!</span></div><strong class="stat-value" id="highPriorityIssues">0</strong><span class="stat-foot">High or critical reports</span></article>
+          </div>
+
+          <section class="issues-panel" aria-labelledby="issuesHeading">
+            <div class="panel-heading"><div><p class="eyebrow">ISSUE TRACKER</p><h2 id="issuesHeading">Recent issues</h2></div><button class="text-button" type="button" data-view="issues">View all issues <span aria-hidden="true">→</span></button></div>
+            <div class="toolbar">
+              <label class="search-box"><span class="search-icon" aria-hidden="true">⌕</span><span class="visually-hidden">Search issues</span><input id="issueSearch" type="search" placeholder="Search ID, title, location..." autocomplete="off"></label>
+              <div class="filter-group">
+                <label><span class="visually-hidden">Filter by category</span><select id="categoryFilter"><option value="all">All categories</option><option>Classroom</option><option>Laboratory</option><option>Library</option><option>Hostel</option><option>Transport</option><option>Network / Internet</option><option>Electrical</option><option>Other</option></select></label>
+                <label><span class="visually-hidden">Filter by priority</span><select id="priorityFilter"><option value="all">All priorities</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></label>
+                <label><span class="visually-hidden">Filter by status</span><select id="statusFilter"><option value="all">All statuses</option><option>Pending</option><option>In Progress</option><option>Resolved</option></select></label>
+                <label><span class="visually-hidden">Sort issues</span><select id="sortOrder"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></label>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="issue-table">
+                <thead><tr><th scope="col">Issue</th><th scope="col">Category</th><th scope="col">Priority</th><th scope="col">Location</th><th scope="col">Reporter</th><th scope="col">Date reported</th><th scope="col">Status</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr></thead>
+                <tbody id="issueTableBody"></tbody>
+              </table>
+              <div class="empty-state" id="emptyState" hidden><span class="empty-icon" aria-hidden="true">⌕</span><strong>No issues found</strong><p>Try changing your search or filters.</p><button class="text-button" id="clearFilters" type="button">Clear all filters</button></div>
+            </div>
+            <div class="table-footer"><span id="resultCount">Showing 0 issues</span><span>Updated just now <span class="live-dot"></span></span></div>
+          </section>
+        </section>
+
+        <section class="view-section" id="reportView" aria-labelledby="reportHeading" hidden>
+          <div class="page-heading"><div><p class="eyebrow">CAMPUS OPERATIONS</p><h1 id="reportHeading">Report an issue</h1><p class="page-subtitle">Tell us what’s happening and where. Your report will be added to the campus tracker.</p></div></div>
+          <div class="form-layout">
+            <form class="report-form" id="reportForm">
+              <div class="form-section-heading"><span class="step-number">01</span><div><h2>Issue details</h2><p>Describe the problem so it can be routed to the right team.</p></div></div>
+              <div class="form-grid">
+                <label class="field field-wide"><span>Issue title <b>*</b></span><input id="issueTitle" name="title" type="text" maxlength="100" placeholder="e.g. Projector not working" required></label>
+                <label class="field field-wide"><span>Description <b>*</b></span><textarea id="issueDescription" name="description" rows="4" maxlength="1000" placeholder="Share what happened and any details that might help..." required></textarea><small>Be specific. Include any relevant details.</small></label>
+                <label class="field"><span>Category <b>*</b></span><select id="issueCategory" name="category" required><option value="" disabled selected>Select a category</option><option>Classroom</option><option>Laboratory</option><option>Library</option><option>Hostel</option><option>Transport</option><option>Network / Internet</option><option>Electrical</option><option>Other</option></select></label>
+                <label class="field"><span>Priority <b>*</b></span><select id="issuePriority" name="priority" required><option value="" disabled selected>Select priority</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></label>
+                <label class="field field-wide"><span>Location <b>*</b></span><input id="issueLocation" name="location" type="text" maxlength="120" placeholder="Building, room, or area" required></label>
+              </div>
+              <div class="form-section-heading reporter-heading"><span class="step-number">02</span><div><h2>Your details</h2><p>We may contact you if the team needs more information.</p></div></div>
+              <div class="form-grid">
+                <label class="field"><span>Reporter name <b>*</b></span><input id="reporterName" name="reporter" type="text" maxlength="80" placeholder="Your name" autocomplete="name" required></label>
+                <label class="field"><span>Reporter email <b>*</b></span><input id="reporterEmail" name="email" type="email" maxlength="120" placeholder="you@college.edu" autocomplete="email" required></label>
+              </div>
+              <div class="form-actions"><span class="required-note"><b>*</b> Required fields</span><button class="primary-button" type="submit">Submit report <span aria-hidden="true">→</span></button></div>
+            </form>
+            <aside class="report-aside"><span class="aside-mark" aria-hidden="true">✳</span><p class="eyebrow">WHAT HAPPENS NEXT</p><h2>Your report, in good hands.</h2><p>Once submitted, your issue gets a unique tracking ID. You can follow its progress from the dashboard and update the team as needed.</p><div class="aside-rule"></div><div class="aside-step"><span>1</span><div><strong>We log it</strong><small>Your report is saved to the tracker.</small></div></div><div class="aside-step"><span>2</span><div><strong>The team picks it up</strong><small>Status changes as work gets underway.</small></div></div><div class="aside-step"><span>3</span><div><strong>Campus gets better</strong><small>You can see when it’s resolved.</small></div></div></aside>
+          </div>
+        </section>
+
+        <section class="view-section" id="issuesView" aria-labelledby="allIssuesHeading" hidden>
+          <div class="page-heading"><div><p class="eyebrow">CAMPUS OPERATIONS</p><h1 id="allIssuesHeading">All issues</h1><p class="page-subtitle">Search, sort, and track every reported campus issue.</p></div><button class="primary-button" type="button" data-view="report"><span aria-hidden="true">+</span> Report an issue</button></div>
+          <div class="issues-panel list-view-panel"><div class="panel-heading"><div><p class="eyebrow">ISSUE TRACKER</p><h2>Issue directory</h2></div></div><div class="toolbar"><label class="search-box"><span class="search-icon" aria-hidden="true">⌕</span><span class="visually-hidden">Search issues</span><input class="shared-search" type="search" placeholder="Search ID, title, location..." autocomplete="off"></label><div class="filter-group"><label><span class="visually-hidden">Filter by category</span><select class="shared-category-filter"><option value="all">All categories</option><option>Classroom</option><option>Laboratory</option><option>Library</option><option>Hostel</option><option>Transport</option><option>Network / Internet</option><option>Electrical</option><option>Other</option></select></label><label><span class="visually-hidden">Filter by priority</span><select class="shared-priority-filter"><option value="all">All priorities</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></label><label><span class="visually-hidden">Filter by status</span><select class="shared-status-filter"><option value="all">All statuses</option><option>Pending</option><option>In Progress</option><option>Resolved</option></select></label><label><span class="visually-hidden">Sort issues</span><select class="shared-sort"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></label></div></div><div class="table-wrap"><table class="issue-table"><thead><tr><th scope="col">Issue</th><th scope="col">Category</th><th scope="col">Priority</th><th scope="col">Location</th><th scope="col">Reporter</th><th scope="col">Date reported</th><th scope="col">Status</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr></thead><tbody class="shared-table-body"></tbody></table><div class="empty-state shared-empty" hidden><span class="empty-icon" aria-hidden="true">⌕</span><strong>No issues found</strong><p>Try changing your search or filters.</p><button class="text-button shared-clear-filters" type="button">Clear all filters</button></div></div><div class="table-footer"><span class="shared-result-count">Showing 0 issues</span><span>Updated just now <span class="live-dot"></span></span></div></div>
+        </section>
+
+        <section class="view-section" id="resolvedView" aria-labelledby="resolvedHeading" hidden>
+          <div class="page-heading"><div><p class="eyebrow">CAMPUS OPERATIONS</p><h1 id="resolvedHeading">Resolved issues</h1><p class="page-subtitle">A record of campus issues that have been taken care of.</p></div></div>
+          <div class="issues-panel list-view-panel"><div class="panel-heading"><div><p class="eyebrow">CLOSED REPORTS</p><h2>Resolved issue directory</h2></div></div><div class="toolbar"><label class="search-box"><span class="search-icon" aria-hidden="true">⌕</span><span class="visually-hidden">Search issues</span><input class="shared-search" type="search" placeholder="Search ID, title, location..." autocomplete="off"></label><div class="filter-group"><label><span class="visually-hidden">Filter by category</span><select class="shared-category-filter"><option value="all">All categories</option><option>Classroom</option><option>Laboratory</option><option>Library</option><option>Hostel</option><option>Transport</option><option>Network / Internet</option><option>Electrical</option><option>Other</option></select></label><label><span class="visually-hidden">Filter by priority</span><select class="shared-priority-filter"><option value="all">All priorities</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></label><label><span class="visually-hidden">Filter by status</span><select class="shared-status-filter"><option value="all">All statuses</option><option>Pending</option><option>In Progress</option><option>Resolved</option></select></label><label><span class="visually-hidden">Sort issues</span><select class="shared-sort"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></label></div></div><div class="table-wrap"><table class="issue-table"><thead><tr><th scope="col">Issue</th><th scope="col">Category</th><th scope="col">Priority</th><th scope="col">Location</th><th scope="col">Reporter</th><th scope="col">Date reported</th><th scope="col">Status</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr></thead><tbody class="shared-table-body"></tbody></table><div class="empty-state shared-empty" hidden><span class="empty-icon" aria-hidden="true">✓</span><strong>No resolved issues yet</strong><p>Resolved reports will appear here.</p><button class="text-button shared-clear-filters" type="button">Clear all filters</button></div></div><div class="table-footer"><span class="shared-result-count">Showing 0 issues</span><span>Updated just now <span class="live-dot"></span></span></div></div>
+        </section>
+
+        <section class="view-section" id="aboutView" aria-labelledby="aboutHeading" hidden>
+          <div class="page-heading"><div><p class="eyebrow">A BETTER WAY TO TAKE CARE OF CAMPUS</p><h1 id="aboutHeading">About CampusFix</h1><p class="page-subtitle">Small fixes make a big difference to everyday campus life.</p></div></div>
+          <div class="about-layout"><div class="about-main"><span class="about-symbol" aria-hidden="true">C</span><p class="eyebrow">BUILT FOR CAMPUS COMMUNITIES</p><h2>Make room for better days.</h2><p>CampusFix gives students a simple way to report issues across classrooms, labs, libraries, hostels, and shared spaces. Every report is organized in one place so campus teams can see what needs attention and keep the community informed.</p><button class="primary-button" type="button" data-view="report">Report an issue <span aria-hidden="true">→</span></button></div><div class="about-facts"><div><strong>One place</strong><span>Reports stay organized and easy to find.</span></div><div><strong>Clear progress</strong><span>Track every issue from pending to resolved.</span></div><div><strong>Community powered</strong><span>Students help shape a better campus.</span></div></div></div>
+        </section>
+      </div>
+      <footer class="page-footer"><span>CampusFix <span aria-hidden="true">·</span> College issue reporting &amp; tracking</span><span>Made for a better campus</span></footer>
+    </main>
+  </div>
+
+  <dialog class="issue-dialog" id="issueDialog" aria-labelledby="dialogHeading"><div class="dialog-content" id="dialogContent"></div></dialog>
+  <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>
